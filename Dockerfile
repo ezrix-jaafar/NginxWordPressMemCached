@@ -8,11 +8,14 @@ ENV WORDPRESS_TABLE_PREFIX=bn_ \
 USER root
 
 # now in root user mode, nginx daemon will need to access the phpfpm stuff from root
-RUN usermod -aG root daemon
-	
-# add memcached package
-RUN export DEBIAN_FRONTEND=noninteractive && \
+RUN usermod -aG root daemon && \	
+# add memcached package (check: php -i | grep memcache)
+	export DEBIAN_FRONTEND=noninteractive && \
 	apt-get update && \
 	apt-get install -y memcached php-memcached && \
-	apt-get autoremove && \
-	service memcached start
+	apt-get autoremove --purge && \
+	apt-get clean && \
+# change memcached settings
+	sed -i 's/-m 64/-m 512/' /etc/memcached.conf && \
+# start the service (else won't start; check : ps -eaf | grep memcached)
+	sed -i 's/# Load WordPress environment/# Load WordPress environment\\\nservice memcached start/' /opt/bitnami/scripts/wordpress/entrypoint.sh
