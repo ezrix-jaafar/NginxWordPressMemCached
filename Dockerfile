@@ -12,6 +12,7 @@ RUN usermod -aG root daemon && \
 # add memcached package (check: php -i | grep memcache)
 	export DEBIAN_FRONTEND=noninteractive && \
 	apt-get update && \
+	apt-get upgrade -y && \
 	apt-get install -y memcached php-memcached && \
 	apt-get autoremove --purge && \
 	apt-get clean && \
