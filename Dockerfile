@@ -2,7 +2,7 @@
 FROM bitnami/wordpress-nginx:latest
 
 ENV WORDPRESS_TABLE_PREFIX=bn_ \
-	WORDPRESS_EXTRA_WP_CONFIG_CONTENT="define('WP_CACHE', true);"
+	WORDPRESS_EXTRA_WP_CONFIG_CONTENT="define('WP_CACHE', true);define( 'WP_AUTO_UPDATE_CORE', true );"
 
 # leave the USER 1001 mode, add package, grand right to 1001 and restore the usage of this user
 USER root
